@@ -19,7 +19,7 @@ var DB *gorm.DB
 func ConnectDB() {
 	_ = godotenv.Load(".env")
 
-	dsn := fmt.Sprintf(
+	dsn := fmt.Sprintf( // Data Source Name (DSN) for PostgreSQL
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
@@ -28,13 +28,13 @@ func ConnectDB() {
 		os.Getenv("DB_PORT"),
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{}) // Open a connection to the PostgreSQL database
 
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	err = db.AutoMigrate(&models.Transaction{})
+	err = db.AutoMigrate(&models.Transaction{}) // Automatically migrate the Transaction model to the database schema
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
