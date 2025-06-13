@@ -13,8 +13,8 @@ import (
 
 func main() {
 	database.ConnectDB()
-
-	reader := kafka.NewReader(kafka.ReaderConfig{
+	reader := kafka.NewReader(kafka.ReaderConfig{ // Kafka reader configuration
+		// Adjust the broker address, topic, and group ID as needed
 		Brokers: []string{"localhost:9092"},
 		Topic:   "transactions",
 		GroupID: "transaction-logger-consumer-group-1",
@@ -25,7 +25,7 @@ func main() {
 	log.Println("Starting Transaction Consumer...")
 
 	for {
-		m, err := reader.ReadMessage(context.Background())
+		m, err := reader.ReadMessage(context.Background()) // Read messages from the Kafka topic
 
 		if err != nil {
 			log.Printf("Error reading message: %v", err)
@@ -33,7 +33,7 @@ func main() {
 		}
 
 		var txn models.Transaction
-		err = json.Unmarshal(m.Value, &txn)
+		err = json.Unmarshal(m.Value, &txn) // Unmarshal the message value into a Transaction struct
 
 		if err != nil {
 			log.Printf("Error unmarshalling message: %v", err)
